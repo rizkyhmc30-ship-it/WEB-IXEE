@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#10051f">
+<title>IXE | Aesthetic Login</title>
+
+<style>
+:root {
+    --bg: #10051f;
+    --purple: #a855f7;
+    --pink: #ff4fd8;
+    --text: #ffffff;
+    --muted: #c9b8dd;
+    --glass: rgba(255,255,255,.07);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(ellipse at top, #381052 0%, transparent 55%),
+        radial-gradient(ellipse at bottom right, #32104b 0%, transparent 45%),
+        var(--bg);
+    color: var(--text);
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
+}
+
+button, input {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+#stars {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.topbar {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+
+.logo {
+    color: white;
+    font-weight: 900;
+    font-size: 23px;
+    letter-spacing: 4px;
+    text-shadow: 0 0 15px var(--pink);
+}
+
+.operator-btn {
+    border: 1px solid var(--pink);
+    background: rgba(255,79,216,.12);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 12px;
+    box-shadow: 0 0 15px rgba(255,79,216,.2);
+}
+
+.operator-btn:hover {
+    background: var(--pink);
+    color: #210a2e;
+}
+
+main {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 1050px;
+    margin: 25px auto;
+    padding: 15px;
+}
+
+.page {
+    display: none;
+    animation: fadeIn .45s ease;
+}
+
+.page.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.login-wrap {
+    min-height: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    width: 100%;
+    max-width: 410px;
+    padding: 32px 25px;
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 24px;
+    background: var(--glass);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow:
+        0 0 35px rgba(168,85,247,.13),
+        inset 0 0 25px rgba(255,255,255,.02);
+}
+
+.card h1 {
+    text-align: center;
+    font-size: 30px;
+    letter-spacing: 5px;
+    margin-bottom: 8px;
+    text-shadow: 0 0 18px var(--purple);
+}
+
+.subtitle {
+    color: var(--muted);
+    text-align: center;
+    font-size: 13px;
+    line-height: 1.7;
+    margin-bottom: 25px;
+}
+
+.field {
+    margin-bottom: 16px;
+}
+
+.field label {
+    display: block;
+    color: #eadcf8;
+    font-size: 12px;
+    margin-bottom: 8px;
+}
+
+.field input {
+    width: 100%;
+    padding: 14px;
+    color: white;
+    background: rgba(0,0,0,.25);
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 12px;
+    outline: none;
+}
+
+.field input:focus {
+    border-color: var(--pink);
+    box-shadow: 0 0 12px rgba(255,79,216,.2);
+}
+
+.primary-btn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-weight: bold;
+    background: linear-gradient(110deg, #8b35ef, #ed3cc5);
+    box-shadow: 0 0 18px rgba(168,85,247,.25);
+    transition: .2s;
+}
+
+.primary-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 25px rgba(255,79,216,.35);
+}
+
+.message {
+    min-height: 20px;
+    margin-top: 14px;
+    font-size: 12px;
+    text-align: center;
+    color: #ff9cde;
+}
+
+.clock {
+    color: var(--muted);
+    text-align: center;
+    font-size: 12px;
+    margin-top: 20px;
+    line-height: 1.8;
+}
+
+.home-heading {
+    text-align: center;
+    margin: 25px 0;
+}
+
+.home-heading .welcome {
+    font-size: clamp(25px, 5vw, 43px);
+    font-weight: 900;
+    line-height: 1.35;
+    background: linear-gradient(90deg, #fff, #e6a6ff, #ff78dd);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 0 12px rgba(255,79,216,.25));
+}
+
+.home-heading p {
+    margin-top: 12px;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.panel {
+    padding: 25px;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 20px;
+    background: var(--glass);
+    backdrop-filter: blur(14px);
+    margin-bottom: 18px;
+}
+
+.panel h2 {
+    font-size: 18px;
+    margin-bottom: 12px;
+}
+
+.panel p {
+    color: var(--muted);
+    line-height: 1.8;
+    font-size: 14px;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: 15px;
+    margin-bottom: 18px;
+}
+
+.stat {
+    padding: 22px 15px;
+    background: var(--glass);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 18px;
+    text-align: center;
+}
+
+.stat strong {
+    display: block;
+    font-size: 30px;
+    color: #f3a4ff;
+    margin-bottom: 8px;
+}
+
+.stat span {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.table-wrap {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 300px;
+    font-size: 12px;
+}
+
+th, td {
+    padding: 13px 10px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,.1);
+}
+
+th {
+    color: #f1b2ff;
+}
+
+td {
+    color: #eee0fa;
+}
+
+.empty {
+    text-align: center;
+    color: var(--muted);
+    padding: 20px;
+}
+
+.logout-btn {
+    display: block;
+    width: 100%;
+    padding: 13px;
+    border: 1px solid rgba(255,100,150,.5);
+    border-radius: 12px;
+    color: white;
+    background: rgba(255,60,120,.12);
+    font-weight: bold;
+}
+
+.logout-btn:hover {
+    background: rgba(255,60,120,.25);
+}
+
+.back-btn {
+    margin-top: 12px;
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    width: 100%;
+    padding: 10px;
+    font-size: 12px;
+}
+
+footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 25px 15px;
+    color: #a994bc;
+    font-size: 11px;
+    letter-spacing: 2px;
+}
+
+footer span {
+    color: var(--pink);
+}
+
+@media (max-width: 500px) {
+    .topbar { padding: 15px; }
+    .logo { font-size: 19px; letter-spacing: 3px; }
+    .card { padding: 27px 20px; }
+    .panel { padding: 18px; }
+    main { margin-top: 10px; }
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="stars"></canvas>
+
+<header class="topbar">
+    <div class="logo">IXE<span style="color:#ff4fd8">.</span></div>
+    <button type="button" class="operator-btn" id="openOperator">
+        ⚙ OPERATOR
+    </button>
+</header>
+
+<main>
+
+<!-- LOGIN BIASA -->
+<section id="loginPage" class="page active">
+    <div class="login-wrap">
+        <div class="card">
+            <h1>IXE LOGIN</h1>
+            <p class="subtitle">
+                Welcome to IXE digital space.<br>
+                Silakan login untuk melanjutkan.
+            </p>
+
+            <form id="loginForm">
+                <div class="field">
+                    <label for="username">USERNAME</label>
+                    <input type="text" id="username"
+                        placeholder="Masukkan username"
+                        autocomplete="username" required>
+                </div>
+
+                <div class="field">
+                    <label for="password">PASSWORD</label>
+                    <input type="password" id="password"
+                        placeholder="Masukkan password"
+                        autocomplete="current-password" required>
+                </div>
+
+                <button class="primary-btn" type="submit">
+                    LOGIN SEKARANG
+                </button>
+            </form>
+
+            <div class="message" id="loginMessage" role="status"></div>
+
+            <div class="clock">
+                <div id="loginTime">Memuat jam...</div>
+                <div id="loginDate"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- LOGIN OPERATOR -->
+<section id="operatorLoginPage" class="page">
+    <div class="login-wrap">
+        <div class="card">
+            <h1>OPERATOR</h1>
+            <p class="subtitle">
+                Administrator Access<br>
+                Masukkan akun operator untuk melanjutkan.
+            </p>
+
+            <form id="operatorForm">
+                <div class="field">
+                    <label for="adminUsername">USERNAME OPERATOR</label>
+                    <input type="text" id="adminUsername"
+                        placeholder="Username operator"
+                        autocomplete="username" required>
+                </div>
+
+                <div class="field">
+                    <label for="adminPassword">PASSWORD OPERATOR</label>
+                    <input type="password" id="adminPassword"
+                        placeholder="Password operator"
+                        autocomplete="current-password" required>
+                </div>
+
+                <button class="primary-btn" type="submit">
+                    MASUK DASHBOARD
+                </button>
+            </form>
+
+            <div class="message" id="operatorMessage" role="status"></div>
+
+            <button type="button" class="back-btn" id="backToLogin">
+                ← Kembali ke login biasa
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- BERANDA -->
+<section id="homePage" class="page">
+    <div class="home-heading">
+        <div class="welcome">SELAMAT DATANG DI BERANDA IXE</div>
+        <p>Login berhasil. Selamat datang di website IXE.</p>
+    </div>
+
+    <div class="panel">
+        <h2>✦ HALO, IXE!</h2>
+        <p>
+            Selamat datang di ruang digital IXE.
+            Nikmati tampilan aesthetic dengan nuansa neon ungu dan pink.
+        </p>
+    </div>
+
+    <div class="stats">
+        <div class="stat">
+            <strong>IXE</strong>
+            <span>USERNAME AKTIF</span>
+        </div>
+
+        <div class="stat">
+            <strong id="homeClock">--:--:--</strong>
+            <span>WAKTU SEKARANG</span>
+        </div>
+    </div>
+
+    <!-- MENU DAFTAR SISWA PENGGANTI INFORMASI WEBSITE -->
+    <div class="panel">
+        <h2>✦ DAFTAR ANAK KELAS 9E-D</h2>
+
+        <p style="margin-bottom:15px">
+            Daftar nama siswa kelas 9E-D beserta nomor absennya.
+        </p>
+
+        <div class="field">
+            <label for="searchSiswa">CARI NAMA ATAU NOMOR ABSEN</label>
+            <input type="search" id="searchSiswa"
+                placeholder="Ketik nama atau nomor absen...">
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>NO. ABSEN</th>
+                        <th>NAMA SISWA</th>
+                    </tr>
+                </thead>
+                <tbody id="daftarSiswa"></tbody>
+            </table>
+        </div>
+
+        <p id="jumlahSiswa" style="margin-top:15px">
+            Total siswa: 27
+        </p>
+    </div>
+
+    <button type="button" class="logout-btn" id="userLogout">
+        LOGOUT
+    </button>
+</section>
+
+<!-- DASHBOARD OPERATOR -->
+<section id="adminPage" class="page">
+    <div class="home-heading">
+        <div class="welcome">OPERATOR DASHBOARD</div>
+        <p>Selamat datang, Administrator.</p>
+    </div>
+
+    <div class="stats">
+        <div class="stat">
+            <strong id="onlineCount">0</strong>
+            <span>SESI AKTIF DI BROWSER INI</span>
+        </div>
+
+        <div class="stat">
+            <strong id="totalLogins">0</strong>
+            <span>TOTAL RIWAYAT LOGIN</span>
+        </div>
+    </div>
+
+    <div class="panel">
+        <h2>✦ RIWAYAT LOGIN</h2>
+        <p style="margin-bottom:15px">
+            Riwayat login yang tersimpan pada browser ini.
+        </p>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>USERNAME</th>
+                        <th>WAKTU</th>
+                        <th>STATUS</th>
+                    </tr>
+                </thead>
+                <tbody id="historyBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel">
+        <h2>✧ INFORMASI OPERATOR</h2>
+        <p>
+            Dashboard menampilkan riwayat login lokal.
+            Data ini hanya tersedia pada browser yang menyimpannya,
+            bukan pemantauan pengguna dari seluruh perangkat.
+        </p>
+    </div>
+
+    <button type="button" class="logout-btn" id="adminLogout">
+        LOGOUT OPERATOR
+    </button>
+</section>
+
+</main>
+
+<footer>
+    © 2026 <span>YUDIT STUDIO</span> — IXE AESTHETIC WEBSITE
+</footer>
+
+<script>
+"use strict";
+
+/* AKUN DEMO */
+const USER_ACCOUNT = {
+    username: "IXE",
+    password: "IXE"
+};
+
+const ADMIN_ACCOUNT = {
+    username: "ADMIN",
+    password: "ADMIN"
+};
+
+const HISTORY_KEY = "ixe_login_history_v1";
+const SESSION_KEY = "ixe_current_user";
+
+/* DATA SISWA KELAS 9E-D */
+const siswaKelas9ED = [
+    { absen: 1, nama: "AGHINA ASNAL MAFATIH" },
+    { absen: 2, nama: "AHNAF NUFFAYI" },
+    { absen: 3, nama: "ALFATAN HAFIDZ PUTRA SUPRIADI" },
+    { absen: 4, nama: "ASYRAF KHAIRUL AZAM FIRMANSYAH" },
+    { absen: 5, nama: "AYUBI ALFATTAH" },
+    { absen: 6, nama: "AZHARI NADZIRUL ATAMIMI" },
+    { absen: 7, nama: "AZZAHI RAFA AL GHIFARI" },
+    { absen: 8, nama: "EVAN FADILAH SISWANTO" },
+    { absen: 9, nama: "HANIF NUR FADHILAH" },
+    { absen: 10, nama: "IBNI AZZAM AL FURQON" },
+    { absen: 11, nama: "ICHIRO ALTAMIS PRADIPTA ISKANDAR" },
+    { absen: 12, nama: "M. FATAHILLAH AS SYIHAB" },
+    { absen: 13, nama: "M. FATIH PRAKOSO" },
+    { absen: 14, nama: "MARTVELL ZIDAN ARKAΝΑ" },
+    { absen: 15, nama: "MUHAMMAD ARFAN DHIYAULHAQ" },
+    { absen: 16, nama: "MUHAMMAD CHERLI NAZHIF AZQIYA" },
+    { absen: 17, nama: "MUHAMMAD FAKHRY SWASONO" },
+    { absen: 18, nama: "M FATIH ELDIEN" },
+    { absen: 19, nama: "MUHAMMAD HANIF ABID" },
+    { absen: 20, nama: "MUHAMMAD SYAUQI ASY SYAFIQ" },
+    { absen: 21, nama: "MUHAMMAD YUDIT EL RIZKY" },
+    { absen: 22, nama: "NAJAF HAMIZAN TRIDAPUTRA" },
+    { absen: 23, nama: "NAZRIL VELDA IHZA PRAMUDYA" },
+    { absen: 24, nama: "RAFIF DAFA ARKANA" },
+    { absen: 25, nama: "RIZKY AMIRULLAH" },
+    { absen: 26, nama: "SULTHAN ZAYYAN IMANI" },
+    { absen: 27, nama: "WAHABULLAH AN NAAFI" }
+];
+
+/* NAVIGASI */
+const pages = [
+    "loginPage",
+    "operatorLoginPage",
+    "homePage",
+    "adminPage"
+];
+
+function showPage(pageId) {
+    pages.forEach(function(id) {
+        document.getElementById(id).classList.toggle(
+            "active",
+            id === pageId
+        );
+    });
+
+    document.getElementById("openOperator").style.display =
+        pageId === "loginPage" ? "inline-block" : "none";
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+/* DAFTAR SISWA DAN PENCARIAN */
+function tampilkanSiswa(kataKunci = "") {
+    const tbody = document.getElementById("daftarSiswa");
+    const jumlah = document.getElementById("jumlahSiswa");
+
+    if (!tbody || !jumlah) return;
+
+    const query = kataKunci.toLocaleLowerCase("id-ID");
+
+    const hasil = siswaKelas9ED.filter(function(siswa) {
+        return siswa.nama.toLocaleLowerCase("id-ID").includes(query) ||
+            String(siswa.absen).includes(query);
+    });
+
+    tbody.replaceChildren();
+
+    if (hasil.length === 0) {
+        const row = document.createElement("tr");
+        const cell = document.createElement("td");
+
+        cell.colSpan = 2;
+        cell.textContent = "Nama siswa tidak ditemukan.";
+        cell.className = "empty";
+
+        row.appendChild(cell);
+        tbody.appendChild(row);
+    } else {
+        hasil.forEach(function(siswa) {
+            const row = document.createElement("tr");
+            const nomor = document.createElement("td");
+            const nama = document.createElement("td");
+
+            nomor.textContent = siswa.absen;
+            nama.textContent = siswa.nama;
+
+            row.append(nomor, nama);
+            tbody.appendChild(row);
+        });
+    }
+
+    jumlah.textContent =
+        "Menampilkan " + hasil.length + " dari " +
+        siswaKelas9ED.length + " siswa";
+}
+
+document.getElementById("searchSiswa").addEventListener("input", function() {
+    tampilkanSiswa(this.value.trim());
+});
+
+tampilkanSiswa();
+
+/* RIWAYAT LOGIN */
+function getHistory() {
+    try {
+        const data = JSON.parse(
+            localStorage.getItem(HISTORY_KEY) || "[]"
+        );
+
+        return Array.isArray(data) ? data : [];
+    } catch (error) {
+        return [];
+    }
+}
+
+function recordLogin(username) {
+    const history = getHistory();
+
+    history.unshift({
+        username: username,
+        time: new Date().toLocaleString("id-ID"),
+        status: "Berhasil"
+    });
+
+    try {
+        localStorage.setItem(
+            HISTORY_KEY,
+            JSON.stringify(history.slice(0, 100))
+        );
+    } catch (error) {
+        console.warn("Riwayat login tidak dapat disimpan.", error);
+    }
+}
+
+function renderDashboard() {
+    const history = getHistory();
+    const tbody = document.getElementById("historyBody");
+
+    document.getElementById("totalLogins").textContent = history.length;
+
+    document.getElementById("onlineCount").textContent =
+        sessionStorage.getItem(SESSION_KEY) === "IXE" ? "1" : "0";
+
+    tbody.replaceChildren();
+
+    if (history.length === 0) {
+        const row = document.createElement("tr");
+        const cell = document.createElement("td");
+
+        cell.colSpan = 3;
+        cell.className = "empty";
+        cell.textContent = "Belum ada riwayat login.";
+
+        row.appendChild(cell);
+        tbody.appendChild(row);
+        return;
+    }
+
+    history.forEach(function(item) {
+        const row = document.createElement("tr");
+
+        [item.username, item.time, item.status].forEach(function(value) {
+            const cell = document.createElement("td");
+            cell.textContent = value;
+            row.appendChild(cell);
+        });
+
+        tbody.appendChild(row);
+    });
+}
+
+/* LOGIN BIASA */
+document.getElementById("loginForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value;
+    const message = document.getElementById("loginMessage");
+
+    if (
+        username === USER_ACCOUNT.username &&
+        password === USER_ACCOUNT.password
+    ) {
+        message.textContent = "";
+        sessionStorage.setItem(SESSION_KEY, "IXE");
+        recordLogin("IXE");
+
+        document.getElementById("loginForm").reset();
+        showPage("homePage");
+    } else {
+        message.textContent = "Username atau password salah!";
+        document.getElementById("password").value = "";
+        document.getElementById("password").focus();
+    }
+});
+
+/* LOGIN OPERATOR */
+document.getElementById("openOperator").addEventListener("click", function() {
+    document.getElementById("operatorMessage").textContent = "";
+    showPage("operatorLoginPage");
+});
+
+document.getElementById("backToLogin").addEventListener("click", function() {
+    document.getElementById("operatorForm").reset();
+    document.getElementById("operatorMessage").textContent = "";
+    showPage("loginPage");
+});
+
+document.getElementById("operatorForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const username = document.getElementById("adminUsername").value.trim();
+    const password = document.getElementById("adminPassword").value;
+    const message = document.getElementById("operatorMessage");
+
+    if (
+        username === ADMIN_ACCOUNT.username &&
+        password === ADMIN_ACCOUNT.password
+    ) {
+        sessionStorage.setItem(SESSION_KEY, "ADMIN");
+
+        document.getElementById("operatorForm").reset();
+        message.textContent = "";
+
+        renderDashboard();
+        showPage("adminPage");
+    } else {
+        message.textContent = "Akun operator tidak valid!";
+        document.getElementById("adminPassword").value = "";
+        document.getElementById("adminPassword").focus();
+    }
+});
+
+/* LOGOUT PENGGUNA */
+document.getElementById("userLogout").addEventListener("click", function() {
+    sessionStorage.removeItem(SESSION_KEY);
+    document.getElementById("loginForm").reset();
+    document.getElementById("loginMessage").textContent = "";
+    showPage("loginPage");
+});
+
+/* LOGOUT OPERATOR */
+document.getElementById("adminLogout").addEventListener("click", function() {
+    sessionStorage.removeItem(SESSION_KEY);
+    document.getElementById("operatorForm").reset();
+    document.getElementById("operatorMessage").textContent = "";
+    showPage("loginPage");
+});
+
+/* JAM DIGITAL */
+function updateClock() {
+    const now = new Date();
+
+    const time = now.toLocaleTimeString("id-ID", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit"
+    });
+
+    const date = now.toLocaleDateString("id-ID", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+    });
+
+    document.getElementById("loginTime").textContent = time;
+    document.getElementById("loginDate").textContent = date;
+    document.getElementById("homeClock").textContent = time;
+}
+
+updateClock();
+setInterval(updateClock, 1000);
+
+/* ANIMASI BINTANG */
+(function createStars() {
+    const canvas = document.getElementById("stars");
+    const ctx = canvas.getContext("2d");
+
+    let stars = [];
+    let width = 0;
+    let height = 0;
+
+    function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+
+        const count = Math.min(
+            140,
+            Math.max(50, Math.floor(width * height / 7000))
+        );
+
+        stars = [];
+
+        for (let i = 0; i < count; i++) {
+            stars.push({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                r: Math.random() * 1.5 + 0.3,
+                a: Math.random(),
+                speed: Math.random() * 0.015 + 0.003
+            });
+        }
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, width, height);
+
+        stars.forEach(function(star) {
+            star.a += star.speed;
+
+            const opacity = 0.25 + Math.abs(Math.sin(star.a)) * 0.65;
+
+            ctx.beginPath();
+            ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
+            ctx.fillStyle = "rgba(255,210,255," + opacity + ")";
+            ctx.fill();
+        });
+
+        requestAnimationFrame(animate);
+    }
+
+    window.addEventListener("resize", resize);
+    resize();
+    animate();
+})();
+
+/* PEMULIHAN SESI */
+(function restoreSession() {
+    const currentUser = sessionStorage.getItem(SESSION_KEY);
+
+    if (currentUser === "IXE") {
+        showPage("homePage");
+    } else if (currentUser === "ADMIN") {
+        renderDashboard();
+        showPage("adminPage");
+    } else {
+        showPage("loginPage");
+    }
+})();
+</script>
+
+</body>
+</html>
